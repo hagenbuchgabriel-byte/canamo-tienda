@@ -5,7 +5,8 @@
  *   <script src="https://cdn.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js" defer></script>
  *
  * Que hace, solo en las paginas de producto:
- *   1. Solapas: "Descripcion" (abierta), "Entregas" y "Cambios y devoluciones".
+ *   1. Solapas: "Descripcion" (abierta), "Tipo de horma" (abierta, segun el producto: ver HORMAS),
+ *      "Entregas" y "Cambios y devoluciones".
  *      Los textos de Entregas y Cambios salen de las paginas /entregas y /cambios-y-devoluciones
  *      (Mi tienda > Editar paginas). Para cambiar esos textos se editan esas paginas, no este archivo.
  *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
@@ -82,12 +83,59 @@
     s.contenido.appendChild(desc);
   });
 
-  // Entregas y Cambios: debajo de "Calcula el costo de envio"
+  // Tipo de horma: depende del producto. Para cambiar un texto o agregar un producto, editar HORMAS.
+  var HORMAS = {
+    borcego: {
+      titulo: 'Horma normal - amplia',
+      texto: ['Pedí el talle que usás habitualmente. Ej.: si calzás 43, pedí 43.',
+              '¿Dudás entre dos talles? Elegí el más chico. Ej.: si calzás 39 o 40, pedí 39.']
+    },
+    zapato: {
+      titulo: 'Horma angosta - chica',
+      texto: ['Te recomendamos pedir un talle más del que usás habitualmente.',
+              'Ej.: si calzás 41, en este modelo pedí 42.']
+    },
+    normal: {
+      titulo: 'Horma normal',
+      texto: ['Elegí el talle que usás habitualmente.']
+    },
+    chica: {
+      titulo: 'Horma chica',
+      texto: ['¿Dudás entre dos talles? Elegí el más grande.']
+    },
+    angosta: {
+      titulo: 'Horma angosta',
+      texto: ['Pedí el talle que usás habitualmente.',
+              '¿Dudás entre dos talles? Elegí el más grande.']
+    }
+  };
+  function hormaDe(p) {
+    if (p.indexOf('/borcegos/') === 0) return HORMAS.borcego;
+    if (p.indexOf('/zapatos/') === 0 && /nazare|tolhuin|holbox/.test(p)) return HORMAS.zapato;
+    var z = p.replace('/zapatillas/', '');
+    if (['zapatilla-dolce-negra-gamuza', 'zapatilla-canamo-estilo-urbano-blanca-gris',
+         'dc-negra-cosida-zapatilla-urbana-base-negra'].indexOf(z) > -1) return HORMAS.normal;
+    if (['zapatillas-londres-blancas', 'londres-negra-cosida-zapatilla-urbana',
+         'pancha-azul-jean'].indexOf(z) > -1) return HORMAS.chica;
+    if (['pancha-canamo-lona-tostado', 'pancha-canamo-lona-negra', 'nautico-kansas-tostado',
+         'nautico-kansas-negro-gris-lona'].indexOf(z) > -1) return HORMAS.angosta;
+    return null;
+  }
+
+  // Tipo de horma, Entregas y Cambios: debajo de "Calcula el costo de envio"
   var envio = document.getElementById('shipment_cost-form');
   if (envio) {
     var grupo = document.createElement('div');
     grupo.className = 'cxw';
     envio.parentNode.appendChild(grupo);
+    var horma = hormaDe(path);
+    if (horma) {
+      var sh = solapa('Tipo de horma', true);
+      var h = '<p><strong>' + horma.titulo + '</strong></p>';
+      horma.texto.forEach(function (t) { h += '<p>' + t + '</p>'; });
+      sh.contenido.innerHTML = h;
+      grupo.appendChild(sh.caja);
+    }
     [
       ['Entregas', '/entregas'],
       ['Cambios y devoluciones', '/cambios-y-devoluciones']
