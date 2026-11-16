@@ -1,8 +1,9 @@
 /*
  * CANAMO - funciones extra para la tienda (canamo.com.ar, Empretienda)
  *
- * Se carga desde Etiquetas HTML <head> con una sola linea:
- *   <script src="https://cdn.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js" defer></script>
+ * Se carga desde Etiquetas HTML <head> con una sola linea, que pide el archivo con una marca
+ * horaria para que los cambios lleguen a todos en menos de una hora:
+ *   <script>(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js?h='+Math.floor(Date.now()/36e5);document.head.appendChild(s)})();</script>
  *
  * Que hace, solo en las paginas de producto:
  *   1. Solapas: "Descripcion" (abierta), "Tipo de horma" (abierta, segun el producto: ver HORMAS),
@@ -12,12 +13,19 @@
  *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
  *      cada uno con boton "Sumar" que agrega al carrito.
  *
- * Despues de modificar este archivo en GitHub, abrir este link para que se actualice enseguida:
+ * Despues de modificar este archivo en GitHub, abrir este link para que el cambio llegue antes:
  *   https://purge.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js
  */
 (function () {
   'use strict';
+  // Se ejecuta cuando la pagina termino de cargar (el archivo se pide de forma asincronica)
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', canamo);
+  } else {
+    canamo();
+  }
 
+  function canamo() {
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -330,4 +338,5 @@
       el.querySelector('.cx-b').addEventListener('click', function () { sumar(p, el); });
     });
   });
+  } // fin de canamo()
 })();
