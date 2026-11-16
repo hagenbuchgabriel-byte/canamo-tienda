@@ -6,7 +6,7 @@
  *
  * Que hace, solo en las paginas de producto:
  *   1. Solapas: "Descripcion" (abierta), "Tipo de horma" (abierta, segun el producto: ver HORMAS),
- *      "Entregas" y "Cambios y devoluciones".
+ *      "Entregas" y "Cambios".
  *      Los textos de Entregas y Cambios salen de las paginas /entregas y /cambios-y-devoluciones
  *      (Mi tienda > Editar paginas). Para cambiar esos textos se editan esas paginas, no este archivo.
  *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
@@ -156,7 +156,7 @@
     }
     [
       ['Entregas', '/entregas'],
-      ['Cambios y devoluciones', '/cambios-y-devoluciones']
+      ['Cambios', '/cambios-y-devoluciones']
     ].forEach(function (x) {
       var s = solapa(x[0], false);
       grupo.appendChild(s.caja);
