@@ -114,6 +114,17 @@
       titulo: 'Horma angosta',
       texto: ['Pedí el talle que usás habitualmente.',
               '¿Dudás entre dos talles? Elegí el más grande.']
+    },
+    panchaLona: {
+      titulo: 'Horma angosta',
+      texto: ['Pedí el talle que usás habitualmente.',
+              'Si tenés pie ancho, pedí un talle más.',
+              '¿Dudás entre dos talles? Elegí el más grande.']
+    },
+    panchaJean: {
+      titulo: 'Horma chica',
+      texto: ['Si tenés pie ancho, pedí un talle más.',
+              '¿Dudás entre dos talles? Elegí el más grande.']
     }
   };
   function hormaDe(p) {
@@ -122,10 +133,10 @@
     var z = p.replace('/zapatillas/', '');
     if (['zapatilla-dolce-negra-gamuza', 'zapatilla-canamo-estilo-urbano-blanca-gris',
          'dc-negra-cosida-zapatilla-urbana-base-negra'].indexOf(z) > -1) return HORMAS.normal;
-    if (['zapatillas-londres-blancas', 'londres-negra-cosida-zapatilla-urbana',
-         'pancha-azul-jean'].indexOf(z) > -1) return HORMAS.chica;
-    if (['pancha-canamo-lona-tostado', 'pancha-canamo-lona-negra', 'nautico-kansas-tostado',
-         'nautico-kansas-negro-gris-lona'].indexOf(z) > -1) return HORMAS.angosta;
+    if (z === 'pancha-azul-jean') return HORMAS.panchaJean;
+    if (['pancha-canamo-lona-tostado', 'pancha-canamo-lona-negra'].indexOf(z) > -1) return HORMAS.panchaLona;
+    if (['zapatillas-londres-blancas', 'londres-negra-cosida-zapatilla-urbana'].indexOf(z) > -1) return HORMAS.chica;
+    if (['nautico-kansas-tostado', 'nautico-kansas-negro-gris-lona'].indexOf(z) > -1) return HORMAS.angosta;
     return null;
   }
 
