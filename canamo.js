@@ -1,9 +1,8 @@
 /*
  * CANAMO - funciones extra para la tienda (canamo.com.ar, Empretienda)
  *
- * Se carga desde Etiquetas HTML <head> con una sola linea, que pide el archivo con una marca
- * horaria para que los cambios lleguen a todos en menos de una hora:
- *   <script>(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js?h='+Math.floor(Date.now()/36e5);document.head.appendChild(s)})();</script>
+ * Se publica con GitHub Pages y se carga desde Etiquetas HTML <head> con una sola linea:
+ *   <script src="https://hagenbuchgabriel-byte.github.io/canamo-tienda/canamo.js" defer></script>
  *
  * Que hace, solo en las paginas de producto:
  *   1. Solapas: "Descripcion" (abierta), "Tipo de horma" (abierta, segun el producto: ver HORMAS),
@@ -13,8 +12,8 @@
  *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
  *      cada uno con boton "Sumar" que agrega al carrito.
  *
- * Despues de modificar este archivo en GitHub, abrir este link para que el cambio llegue antes:
- *   https://purge.jsdelivr.net/gh/hagenbuchgabriel-byte/canamo-tienda@main/canamo.js
+ * Para hacer un cambio: editar este archivo en GitHub y guardar con "Commit changes".
+ * GitHub Pages lo publica en 1-2 minutos y los navegadores lo renuevan en 10 minutos como maximo.
  */
 (function () {
   'use strict';
