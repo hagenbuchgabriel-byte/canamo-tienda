@@ -11,6 +11,8 @@
  *      (Mi tienda > Editar paginas). Para cambiar esos textos se editan esas paginas, no este archivo.
  *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
  *      cada uno con boton "Sumar" que agrega al carrito.
+ *   3. Datos para Google (no se ven): precio, stock, fotos y categoria de cada producto,
+ *      para que aparezcan en los resultados de busqueda.
  *
  * Para hacer un cambio: editar este archivo en GitHub y guardar con "Commit changes".
  * GitHub Pages lo publica en 1-2 minutos y los navegadores lo renuevan en 10 minutos como maximo.
@@ -27,6 +29,8 @@
   function canamo() {
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
+
+  try { datosParaGoogle(); } catch (e) {}
 
   /* ------------------------------------------------------------------ */
   /* Estilos                                                            */
@@ -349,4 +353,97 @@
     });
   });
   } // fin de canamo()
+
+  /* ------------------------------------------------------------------ */
+  /* Datos para Google (precio, stock, fotos, categoria)                */
+  /* No se ven en la tienda: Google los lee para mostrar precio y       */
+  /* disponibilidad en los resultados de busqueda.                      */
+  /* ------------------------------------------------------------------ */
+  function datosParaGoogle() {
+    if (typeof s_producto === 'undefined' || typeof p_nombre === 'undefined') return;
+    var canonical = document.querySelector('link[rel="canonical"]');
+    var url = canonical ? canonical.href : location.origin + location.pathname.replace(/\/$/, '');
+    var meta = document.querySelector('meta[name="description"]');
+
+    var fotos = [];
+    if (typeof i_link_principal !== 'undefined' && i_link_principal) fotos.push(i_link_principal);
+    document.querySelectorAll('.product-vip__images-grid-mini-image').forEach(function (img) {
+      var src = img.getAttribute('data-src') || img.getAttribute('src');
+      if (src && fotos.indexOf(src) == -1) fotos.push(src);
+    });
+
+    // Precio y stock de cada variante (talle/color)
+    var precios = [], hayStock = false;
+    stock.forEach(function (v) {
+      if (!v.s_mostrar_precio) return;
+      precios.push(Number(v.s_oferta ? v.s_precio_oferta : v.s_precio));
+      if (v.s_ilimitado || v.s_cantidad > 0) hayStock = true;
+    });
+    if (!precios.length) precios.push(Number(s_producto.precio));
+    var min = Math.min.apply(null, precios), max = Math.max.apply(null, precios);
+    // (s_producto.stock no sirve: la tienda lo cambia al cargar la pagina)
+    var disponible = hayStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock';
+
+    var oferta = {
+      '@type': min == max ? 'Offer' : 'AggregateOffer',
+      url: url,
+      priceCurrency: 'ARS',
+      availability: disponible,
+      itemCondition: 'https://schema.org/NewCondition',
+      seller: { '@type': 'Organization', name: 'Canamo' },
+      hasMerchantReturnPolicy: {
+        '@type': 'MerchantReturnPolicy',
+        applicableCountry: 'AR',
+        returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+        merchantReturnDays: 10,
+        returnMethod: 'https://schema.org/ReturnByMail',
+        returnFees: 'https://schema.org/ReturnShippingFees'
+      }
+    };
+    if (min == max) {
+      oferta.price = min;
+      if (s_producto.precio_anterior > min) {
+        oferta.priceSpecification = {
+          '@type': 'UnitPriceSpecification',
+          priceType: 'https://schema.org/StrikethroughPrice',
+          price: Number(s_producto.precio_anterior),
+          priceCurrency: 'ARS'
+        };
+      }
+    } else {
+      oferta.lowPrice = min;
+      oferta.highPrice = max;
+      oferta.offerCount = precios.length;
+    }
+
+    var producto = {
+      '@context': 'https://schema.org',
+      '@type': 'Product',
+      name: p_nombre,
+      url: url,
+      image: fotos,
+      brand: { '@type': 'Brand', name: 'Canamo' },
+      offers: oferta
+    };
+    if (meta && meta.content) producto.description = meta.content;
+    if (stock[0] && stock[0].idStock) producto.sku = String(stock[0].idStock);
+
+    // Ruta: Inicio > Categoria > Producto
+    var migas = [], pos = 1;
+    document.querySelectorAll('.product-vip__breadcrumb .breadcrumb__link').forEach(function (a, i, todos) {
+      var nombre = a.textContent.trim();
+      if (!nombre) return;
+      migas.push({ '@type': 'ListItem', position: pos++, name: nombre, item: i == todos.length - 1 ? url : a.href });
+    });
+
+    agregar(producto);
+    if (migas.length > 1) agregar({ '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: migas });
+
+    function agregar(datos) {
+      var s = document.createElement('script');
+      s.type = 'application/ld+json';
+      s.textContent = JSON.stringify(datos);
+      document.head.appendChild(s);
+    }
+  }
 })();
