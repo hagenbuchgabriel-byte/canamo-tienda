@@ -13,6 +13,8 @@
  *      cada uno con boton "Sumar" que agrega al carrito.
  *   3. Datos para Google (no se ven): precio, stock, fotos y categoria de cada producto,
  *      para que aparezcan en los resultados de busqueda.
+ *   4. Compra confirmada (pagina /order): avisa a Tag Manager con monto y numero de pedido,
+ *      para medir ventas reales en Google Analytics y Google Ads.
  *
  * Para hacer un cambio: editar este archivo en GitHub y guardar con "Commit changes".
  * GitHub Pages lo publica en 1-2 minutos y los navegadores lo renuevan en 10 minutos como maximo.
@@ -27,6 +29,7 @@
   }
 
   function canamo() {
+  try { medirCompra(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -353,6 +356,36 @@
     });
   });
   } // fin de canamo()
+
+  /* ------------------------------------------------------------------ */
+  /* Compra confirmada: avisa a Tag Manager (evento "compra_confirmada") */
+  /* con el monto y el numero de pedido, para Google Analytics y Ads.   */
+  /* Solo en la pagina /order que ve el cliente al terminar la compra.  */
+  /* ------------------------------------------------------------------ */
+  function medirCompra() {
+    if (location.pathname.replace(/\/$/, '') !== '/order') return;
+    if (typeof order === 'undefined' || !order || !order.number || !order.amount) return;
+    var estado = (new URLSearchParams(location.search).get('order_status') || '').toLowerCase();
+    if (/rejected|failure|cancel/.test(estado)) return; // pago rechazado: no es venta
+    var id = String(order.number);
+    try {
+      if (localStorage.getItem('cx_compra_' + id)) return; // ya se aviso (el cliente volvio a abrir la pagina)
+      localStorage.setItem('cx_compra_' + id, '1');
+    } catch (e) {}
+    var items = [];
+    if (typeof carrito !== 'undefined' && carrito && carrito.productos) {
+      Object.keys(carrito.productos).forEach(function (k) {
+        var p = carrito.productos[k];
+        items.push({ item_id: k, item_name: p.nombre, price: Number(p.precio_unitario), quantity: Number(p.cantidad) });
+      });
+    }
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ ecommerce: null });
+    window.dataLayer.push({
+      event: 'compra_confirmada',
+      ecommerce: { transaction_id: id, value: Number(order.amount), currency: 'ARS', items: items }
+    });
+  }
 
   /* ------------------------------------------------------------------ */
   /* Datos para Google (precio, stock, fotos, categoria)                */
