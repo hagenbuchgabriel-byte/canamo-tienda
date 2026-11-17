@@ -128,6 +128,11 @@
               'Si tenés pie ancho, pedí un talle más.',
               '¿Dudás entre dos talles? Elegí el más grande.']
     },
+    zueco: {
+      titulo: 'Horma chica',
+      texto: ['Te recomendamos pedir un talle más del que usás habitualmente.',
+              'Ej.: si calzás 41, en este modelo pedí 42.']
+    },
     panchaJean: {
       titulo: 'Horma chica',
       texto: ['Si tenés pie ancho, pedí un talle más.',
@@ -140,6 +145,7 @@
     var z = p.replace('/zapatillas/', '');
     if (['zapatilla-dolce-negra-gamuza', 'zapatilla-canamo-estilo-urbano-blanca-gris',
          'dc-negra-cosida-zapatilla-urbana-base-negra'].indexOf(z) > -1) return HORMAS.normal;
+    if (/zueco/.test(z)) return HORMAS.zueco; // todos los zuecos (Coco y futuros colores)
     if (z === 'pancha-azul-jean') return HORMAS.panchaJean;
     if (['pancha-canamo-lona-tostado', 'pancha-canamo-lona-negra'].indexOf(z) > -1) return HORMAS.panchaLona;
     if (['zapatillas-londres-blancas', 'londres-negra-cosida-zapatilla-urbana'].indexOf(z) > -1) return HORMAS.chica;
