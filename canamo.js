@@ -372,10 +372,11 @@
   /* ------------------------------------------------------------------ */
   /* Texto y preguntas frecuentes debajo de las categorias (SEO)         */
   /* ------------------------------------------------------------------ */
+  function datosCategorias() { // dentro de una funcion: canamo() puede correr antes que estas lineas
   var ENVIO = ['¿Hacen envíos?', 'Sí, a todo el país. Calculá el costo y el plazo con tu código postal en la página de cada producto.'];
   var RETIRO = ['¿Puedo retirar en persona?', 'Sí, sin cargo en nuestro taller de Av. Larrazábal 1642 (CABA), coordinando antes por WhatsApp.'];
   var CAMBIO = ['¿Puedo cambiarlos?', 'Sí, tenés hasta 10 días desde que recibís la compra.'];
-  var CATEGORIAS = {
+  return {
     '/borcegos': {
       titulo: 'Borcegos de hombre hechos a mano',
       texto: 'En Canamo fabricamos borcegos de hombre en nuestro taller de Buenos Aires. El Borcego Tison viene en negro, roble, tostado y camel, y el Borcego Milan tiene cierre para ponértelo y sacártelo más rápido. Son resistentes, cómodos y con diseño urbano para usar todos los días. Talles del 35 al 46.',
@@ -396,8 +397,9 @@
         ENVIO, RETIRO, ['¿Puedo cambiarlas?', CAMBIO[1]]]
     }
   };
+  }
   function textosCategoria() {
-    var cat = CATEGORIAS[location.pathname.replace(/\/$/, '').toLowerCase()];
+    var cat = datosCategorias()[location.pathname.replace(/\/$/, '').toLowerCase()];
     var feed = document.querySelector('section.category-feed');
     if (!cat || !feed || document.querySelector('.cx-cat')) return;
     var s = document.createElement('section');
