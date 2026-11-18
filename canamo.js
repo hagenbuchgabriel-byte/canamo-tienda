@@ -30,6 +30,7 @@
 
   function canamo() {
   try { medirCompra(); } catch (e) {}
+  try { textosCategoria(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -368,6 +369,50 @@
   /* con el monto y el numero de pedido, para Google Analytics y Ads.   */
   /* Solo en la pagina /order que ve el cliente al terminar la compra.  */
   /* ------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------ */
+  /* Texto y preguntas frecuentes debajo de las categorias (SEO)         */
+  /* ------------------------------------------------------------------ */
+  var ENVIO = ['¿Hacen envíos?', 'Sí, a todo el país. Calculá el costo y el plazo con tu código postal en la página de cada producto.'];
+  var RETIRO = ['¿Puedo retirar en persona?', 'Sí, sin cargo en nuestro taller de Av. Larrazábal 1642 (CABA), coordinando antes por WhatsApp.'];
+  var CAMBIO = ['¿Puedo cambiarlos?', 'Sí, tenés hasta 10 días desde que recibís la compra.'];
+  var CATEGORIAS = {
+    '/borcegos': {
+      titulo: 'Borcegos de hombre hechos a mano',
+      texto: 'En Canamo fabricamos borcegos de hombre en nuestro taller de Buenos Aires. El Borcego Tison viene en negro, roble, tostado y camel, y el Borcego Milan tiene cierre para ponértelo y sacártelo más rápido. Son resistentes, cómodos y con diseño urbano para usar todos los días. Talles del 35 al 46.',
+      faq: [ENVIO, RETIRO,
+        ['¿Qué talle pido?', 'El Tison tiene horma normal-amplia: pedí tu talle de siempre. En cada producto vas a ver la solapa "Tipo de horma".'],
+        CAMBIO]
+    },
+    '/zapatos': {
+      titulo: 'Zapatos de hombre hechos a mano',
+      texto: 'Zapatos Nazare y Tolhuin fabricados en nuestro taller de Buenos Aires, con base de Spanzor antideslizante. Modelos elegantes para la oficina o un evento, en negro y marrón chocolate. También armamos combos de zapato + cinturón de cuero vacuno.',
+      faq: [['¿Cómo calzan los Nazare?', 'Tienen horma chica: te recomendamos pedir un talle más del que usás habitualmente.'],
+        ENVIO, RETIRO, CAMBIO]
+    },
+    '/zapatillas': {
+      titulo: 'Zapatillas urbanas de diseño propio',
+      texto: 'Zapatillas urbanas diseñadas y fabricadas por Canamo en Buenos Aires: modelos Dolce, Londres y más, para usar todos los días.',
+      faq: [['¿Qué talle pido?', 'Cada producto tiene la solapa "Tipo de horma" con la recomendación de talle.'],
+        ENVIO, RETIRO, ['¿Puedo cambiarlas?', CAMBIO[1]]]
+    }
+  };
+  function textosCategoria() {
+    var cat = CATEGORIAS[location.pathname.replace(/\/$/, '').toLowerCase()];
+    var feed = document.querySelector('section.category-feed');
+    if (!cat || !feed || document.querySelector('.cx-cat')) return;
+    var s = document.createElement('section');
+    s.className = 'cx-cat uk-container';
+    s.style.cssText = 'max-width:820px;margin:32px auto 40px;line-height:1.55';
+    var h = '<h1 style="font-size:1.5rem;font-weight:700;margin:0 0 12px">' + cat.titulo + '</h1>' +
+      '<p style="margin:0 0 20px">' + cat.texto + '</p>' +
+      '<h2 style="font-size:1.15rem;font-weight:700;margin:0 0 10px">Preguntas frecuentes</h2>';
+    cat.faq.forEach(function (q) {
+      h += '<h3 style="font-size:1rem;font-weight:600;margin:14px 0 4px">' + q[0] + '</h3><p style="margin:0">' + q[1] + '</p>';
+    });
+    s.innerHTML = h;
+    feed.parentNode.insertBefore(s, feed.nextSibling);
+  }
+
   function medirCompra() {
     if (location.pathname.replace(/\/$/, '') !== '/order') return;
     if (typeof order === 'undefined' || !order || !order.number || !order.amount) return;
