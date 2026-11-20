@@ -9,7 +9,7 @@
  *      "Entregas" y "Cambios".
  *      Los textos de Entregas y Cambios salen de las paginas /entregas y /cambios-y-devoluciones
  *      (Mi tienda > Editar paginas). Para cambiar esos textos se editan esas paginas, no este archivo.
- *   2. Bloque "Combina con": "Lo viste recien" + 2 productos que se compran juntos + 1 collar + 1 cinturon,
+ *   2. Bloque "Combina con": 1 cinturon + 1 calzado de otro modelo + 1 collar,
  *      cada uno con boton "Sumar" que agrega al carrito.
  *   3. Datos para Google (no se ven): precio, stock, fotos y categoria de cada producto,
  *      para que aparezcan en los resultados de busqueda.
@@ -233,23 +233,23 @@
   } catch (e) {}
   if (visto === path) visto = null;
 
-  var usados = [path, visto];
+  var usados = [path];
   function libre(u) { return u && usados.indexOf(u) === -1; }
 
+  // Un solo calzado, y de otro modelo (no el mismo en otro color)
+  function modelo(u) { var m = u.match(/tison|milan|nazare|tolhuin|holbox|londres|pancha|kansas|cinturon/); return m ? m[0] : u; }
+  var esMarron = /marron|roble|tostado|camel|chocolate|suela/.test(path);
   var lista = [];
-  (REGLAS[path] || []).concat(RESERVA).forEach(function (x) {
-    if (lista.length < 2 && libre(x[0])) {
-      var etiqueta = (path.indexOf('tison') > -1 && x[0].indexOf('tison') > -1) ? OTRO_COLOR : x[1];
-      lista.push([x[0], etiqueta]);
+  (REGLAS[path] || []).concat([[esMarron ? NAZ_M : NAZ_N, COMBINA]], RESERVA).forEach(function (x) {
+    if (lista.length < 1 && libre(x[0]) && modelo(x[0]) !== modelo(path) && x[1] !== OTRO_COLOR) {
+      lista.push(x);
       usados.push(x[0]);
     }
   });
-  var esMarron = /marron|roble|tostado|camel|chocolate|suela/.test(path);
   var collar = [PENDULO, ONIX].filter(libre)[0];
   var cinto = (esMarron ? [CINTO_M, CINTO_N] : [CINTO_N, CINTO_M]).filter(libre)[0];
+  if (cinto) lista.unshift([cinto, 'Completá el look']);
   if (collar) lista.push([collar, 'Sumale un collar']);
-  if (cinto) lista.push([cinto, 'Completá el look']);
-  if (visto) lista.unshift([visto, 'Lo viste recién']);
 
   function leer(html, nombre) {
     var m = html.match(new RegExp('var ' + nombre + ' = (.*?);\\s*\\n'));
