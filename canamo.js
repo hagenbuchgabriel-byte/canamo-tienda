@@ -321,6 +321,8 @@
       dataType: 'JSON', data: datos, contentType: false, processData: false
     }).done(function (r) {
       boton.textContent = '¡Sumado!';
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'combina_sumar', cx_sumado: p.nombre, cx_tipo: p.etiqueta, cx_desde: path, cx_valor: Number(p.info.precio) });
       build_cart(r.data, true, r.message && r.message.description);
       setTimeout(function () { boton.disabled = false; boton.textContent = 'Sumar'; }, 2500);
     }).fail(function (x) {
