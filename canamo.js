@@ -485,7 +485,20 @@
         returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
         merchantReturnDays: 10,
         returnMethod: 'https://schema.org/ReturnByMail',
-        returnFees: 'https://schema.org/ReturnShippingFees'
+        // El cliente paga un envio del cambio (o lo trae sin cargo al local)
+        returnFees: 'https://schema.org/ReturnFeesCustomerResponsibility'
+      },
+      // Envio a domicilio: el costo real depende del codigo postal;
+      // $13.000 cubre casi todo el pais. Despacho 2 a 8 dias habiles.
+      shippingDetails: {
+        '@type': 'OfferShippingDetails',
+        shippingRate: { '@type': 'MonetaryAmount', value: 13000, currency: 'ARS' },
+        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'AR' },
+        deliveryTime: {
+          '@type': 'ShippingDeliveryTime',
+          handlingTime: { '@type': 'QuantitativeValue', minValue: 2, maxValue: 8, unitCode: 'DAY' },
+          transitTime: { '@type': 'QuantitativeValue', minValue: 1, maxValue: 7, unitCode: 'DAY' }
+        }
       }
     };
     if (min == max) {
