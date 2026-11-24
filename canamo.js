@@ -32,6 +32,7 @@
   try { medirCompra(); } catch (e) {}
   try { textosCategoria(); } catch (e) {}
   try { datosEmpresa(); } catch (e) {}
+  try { guiaTalles(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -166,6 +167,7 @@
       var sh = solapa('Tipo de horma', true);
       var h = '<p><strong>' + horma.titulo + '</strong></p>';
       horma.texto.forEach(function (t) { h += '<p>' + t + '</p>'; });
+      h += '<p><a href="/guia-de-talles" style="text-decoration:underline">Ver guía de talles con medidas en cm</a></p>';
       sh.contenido.innerHTML = h;
       grupo.appendChild(sh.caja);
     }
@@ -464,6 +466,109 @@
     s.className = 'cx-empresa';
     s.textContent = JSON.stringify(empresa);
     document.head.appendChild(s);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Guia de talles (/guia-de-talles): el texto se carga en Empretienda */
+  /* (Editar paginas). Aca solo se le da diseno: tablas de cm,          */
+  /* calculadora "¿que talle soy?", tarjetas y botones.                 */
+  /* ------------------------------------------------------------------ */
+  function guiaTalles() {
+    if (location.pathname.replace(/\/$/, '') !== '/guia-de-talles') return;
+    var c = document.querySelector('.page__content');
+    if (!c || c.classList.contains('gt')) return;
+    c.classList.add('gt');
+
+    var css = '.gt{max-width:860px;margin:0 auto;font-size:15px;line-height:1.6;color:#222}' +
+      '.gt>p:first-child{font-size:17px;background:#f6f1ea;border-radius:14px;padding:18px 20px;margin-bottom:8px}' +
+      '.gt h2{font-size:22px;margin:38px 0 12px;padding-bottom:8px;border-bottom:2px solid #111;text-transform:none;letter-spacing:0}' +
+      '.gt h3{font-size:16px;margin:0 0 4px;text-transform:none}' +
+      '.gt ol{list-style:none;counter-reset:p;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}' +
+      '.gt ol li{counter-increment:p;background:#fff;border:1px solid #e6e0d8;border-radius:12px;padding:14px;font-size:14px}' +
+      '.gt ol li:before{content:counter(p);display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#111;color:#fff;font-weight:700;margin-bottom:8px}' +
+      '.gt .gt-tip{background:#fff8ec;border-left:4px solid #8a5a2b;border-radius:8px;padding:12px 14px}' +
+      '.gt .gt-tabla{overflow-x:auto;margin:10px 0 6px;border:1px solid #e6e0d8;border-radius:12px}' +
+      '.gt table{border-collapse:collapse;width:100%;min-width:520px;text-align:center;font-size:14px}' +
+      '.gt th,.gt td{padding:9px 6px;border-right:1px solid #eee}' +
+      '.gt th{background:#111;color:#fff;font-weight:600}.gt td{background:#fff}' +
+      '.gt th:first-child,.gt td:first-child{text-align:left;padding-left:12px;white-space:nowrap}' +
+      '.gt td.gt-on{background:#8a5a2b;color:#fff;font-weight:700}' +
+      '.gt .gt-nota{font-size:13px;color:#666}' +
+      '.gt .gt-calc{background:#111;color:#fff;border-radius:16px;padding:20px;margin:24px 0}' +
+      '.gt .gt-calc h2{color:#fff;border-color:#fff;margin-top:0}' +
+      '.gt .gt-calc .gt-f{display:flex;flex-wrap:wrap;gap:10px;align-items:center}' +
+      '.gt .gt-calc select,.gt .gt-calc input{height:44px;border-radius:10px;border:0;padding:0 12px;font-size:16px;color:#111;background:#fff}' +
+      '.gt .gt-calc input{width:110px}' +
+      '.gt .gt-res{margin-top:14px;font-size:17px;min-height:26px}' +
+      '.gt .gt-res b{font-size:26px;color:#f3c98b}' +
+      '.gt h3{background:#f6f1ea;border-radius:10px 10px 0 0;padding:12px 14px;margin-top:12px}' +
+      '.gt h3+p{border:1px solid #f0e9df;border-top:0;border-radius:0 0 10px 10px;padding:10px 14px;margin:0}' +
+      '.gt .gt-btns{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 10px}' +
+      '.gt .gt-btns a{flex:1 1 150px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:12px 16px;font-weight:600;text-decoration:none}' +
+      '.gt .gt-btns a.gt-wa{background:#25d366}';
+    var st = document.createElement('style');
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    // "Que talle pedir" destacado
+    c.querySelectorAll('p').forEach(function (p) {
+      if (/^Qué talle pedir/.test(p.textContent.trim())) p.className = 'gt-tip';
+    });
+
+    // Listas "Talle 39: 25,5 cm" -> tablas
+    var grupos = [];
+    c.querySelectorAll('ul').forEach(function (ul) {
+      var filas = [];
+      ul.querySelectorAll('li').forEach(function (li) {
+        var m = li.textContent.match(/^Talle (\d{2}): ([\d,]+)(?: a ([\d,]+))? cm\s*(\((.+)\))?/);
+        if (m) filas.push({ talle: m[1], cm: m[3] ? m[2] + '–' + m[3] : m[2], max: parseFloat((m[3] || m[2]).replace(',', '.')), nota: m[5] || '' });
+      });
+      if (filas.length < 3) return;
+      var h2 = ul.previousElementSibling;
+      while (h2 && h2.tagName !== 'H2') h2 = h2.previousElementSibling;
+      var nombre = h2 ? h2.textContent.split(':')[0].trim() : 'Modelo';
+      var notas = filas.filter(function (f) { return f.nota; }).map(function (f) { return 'Talle ' + f.talle + ': ' + f.nota + '.'; });
+      var t = '<table><tr><th>Talle</th>' + filas.map(function (f) { return '<th>' + f.talle + '</th>'; }).join('') + '</tr>' +
+        '<tr><td>Plantilla</td>' + filas.map(function (f) { return '<td data-t="' + f.talle + '">' + f.cm + '</td>'; }).join('') + '</tr></table>';
+      var caja = document.createElement('div');
+      caja.innerHTML = '<div class="gt-tabla">' + t + '</div>' + (notas.length ? '<p class="gt-nota">' + notas.join(' ') + '</p>' : '');
+      var prev = ul.previousElementSibling;
+      if (prev && /Largo de plantilla/.test(prev.textContent)) prev.remove();
+      ul.parentNode.replaceChild(caja, ul);
+      grupos.push({ nombre: nombre, filas: filas, caja: caja });
+    });
+
+    // Calculadora: medida del pie en cm -> talle
+    if (grupos.length) {
+      var calc = document.createElement('div');
+      calc.className = 'gt-calc';
+      calc.innerHTML = '<h2>¿Qué talle soy?</h2><p>Elegí el modelo, poné cuánto mide tu pie y te decimos el talle.</p>' +
+        '<div class="gt-f"><select>' + grupos.map(function (g, i) { return '<option value="' + i + '">' + g.nombre + '</option>'; }).join('') +
+        '</select><input type="number" inputmode="decimal" step="0.1" min="20" max="33" placeholder="Ej: 26,5"> <span>cm</span></div><div class="gt-res"></div>';
+      var pasos = c.querySelector('ol');
+      (pasos ? pasos : c.firstElementChild).insertAdjacentElement('afterend', calc);
+      var sel = calc.querySelector('select'), inp = calc.querySelector('input'), res = calc.querySelector('.gt-res');
+      var calcular = function () {
+        c.querySelectorAll('td.gt-on').forEach(function (td) { td.classList.remove('gt-on'); });
+        var cm = parseFloat(String(inp.value).replace(',', '.'));
+        if (!cm) { res.textContent = ''; return; }
+        var g = grupos[sel.value], elegido = null;
+        for (var i = 0; i < g.filas.length; i++) { if (g.filas[i].max >= cm) { elegido = g.filas[i]; break; } }
+        if (!elegido) { res.innerHTML = 'Tu medida supera nuestro talle más grande en este modelo. Escribinos y te asesoramos.'; return; }
+        res.innerHTML = 'Tu talle en ' + g.nombre + ': <b>' + elegido.talle + '</b> (plantilla de ' + elegido.cm + ' cm)';
+        var td = g.caja.querySelector('td[data-t="' + elegido.talle + '"]');
+        if (td) td.classList.add('gt-on');
+      };
+      sel.addEventListener('change', calcular);
+      inp.addEventListener('input', calcular);
+    }
+
+    // Botones al final
+    var btns = document.createElement('div');
+    btns.className = 'gt-btns';
+    btns.innerHTML = '<a href="/borcegos">Ver borcegos</a><a href="/zapatos">Ver zapatos</a><a href="/zapatillas">Ver zapatillas</a>' +
+      '<a class="gt-wa" href="https://wa.me/541178404747?text=Hola!%20Tengo%20una%20duda%20con%20el%20talle" target="_blank" rel="noopener">Consultar por WhatsApp</a>';
+    c.appendChild(btns);
   }
 
   function medirCompra() {
