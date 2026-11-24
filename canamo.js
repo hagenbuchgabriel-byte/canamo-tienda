@@ -31,6 +31,7 @@
   function canamo() {
   try { medirCompra(); } catch (e) {}
   try { textosCategoria(); } catch (e) {}
+  try { datosEmpresa(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -415,6 +416,54 @@
     });
     s.innerHTML = h;
     feed.parentNode.insertBefore(s, feed.nextSibling);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Datos de la empresa para Google (solo en la home): nombre, logo,   */
+  /* direccion, horarios, telefono y redes. Une la web con la ficha de  */
+  /* Google Maps, Instagram y Facebook.                                 */
+  /* ------------------------------------------------------------------ */
+  function datosEmpresa() {
+    if (location.pathname.replace(/\/$/, '') !== '') return;
+    if (document.querySelector('script.cx-empresa')) return;
+    var dias = function (d, abre, cierra) {
+      return { '@type': 'OpeningHoursSpecification', dayOfWeek: d, opens: abre, closes: cierra };
+    };
+    var empresa = {
+      '@context': 'https://schema.org',
+      '@type': 'ShoeStore',
+      '@id': 'https://www.canamo.com.ar/#empresa',
+      name: 'Canamo',
+      alternateName: 'Canamo Fábrica de Calzados',
+      url: 'https://www.canamo.com.ar/',
+      logo: 'https://d22fxaf9t8d39k.cloudfront.net/3509ce1d12c19379d0be911b24cd471fa5f2629332f58e72183a7ef058193d8410140.png',
+      image: 'https://d22fxaf9t8d39k.cloudfront.net/3509ce1d12c19379d0be911b24cd471fa5f2629332f58e72183a7ef058193d8410140.png',
+      description: 'Fábrica de calzado en Mataderos, Buenos Aires. Borcegos, zapatos y zapatillas directo de fábrica, con envíos a todo el país.',
+      telephone: '+54 11 7840-4747',
+      email: 'canhamoindumentaria@gmail.com',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: 'Av. Larrazábal 1642',
+        addressLocality: 'Mataderos',
+        addressRegion: 'Ciudad Autónoma de Buenos Aires',
+        postalCode: 'C1440CUV',
+        addressCountry: 'AR'
+      },
+      openingHoursSpecification: [
+        dias(['https://schema.org/Monday', 'https://schema.org/Wednesday', 'https://schema.org/Friday'], '13:00', '19:00'),
+        dias('https://schema.org/Saturday', '10:00', '13:00')
+      ],
+      areaServed: 'AR',
+      sameAs: [
+        'https://www.instagram.com/canamo.calzado/',
+        'https://www.facebook.com/Canamo-100576335054386'
+      ]
+    };
+    var s = document.createElement('script');
+    s.type = 'application/ld+json';
+    s.className = 'cx-empresa';
+    s.textContent = JSON.stringify(empresa);
+    document.head.appendChild(s);
   }
 
   function medirCompra() {
