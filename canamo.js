@@ -34,6 +34,7 @@
   try { datosEmpresa(); } catch (e) {}
   try { guiaTalles(); } catch (e) {}
   try { historia(); } catch (e) {}
+  try { notaBlog(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -710,6 +711,135 @@
         homeLocation: { '@type': 'Place', name: 'Buenos Aires, Argentina' }
       }
     });
+    document.head.appendChild(s);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Notas del blog (/blog/...): el texto se carga en Empretienda        */
+  /* (Crear blog). Aca: diseno, tarjetas de productos con precio al dia, */
+  /* fotos de modelos, botones y datos de la nota para Google.           */
+  /* Para una nota nueva: agregar su direccion en NOTAS.                 */
+  /* ------------------------------------------------------------------ */
+  function notasBlog() {
+    var I = 'https://d22fxaf9t8d39k.cloudfront.net/';
+    var BORCEGOS = ['/borcegos/borcego-tison-negro', '/borcegos/borcego-tison-roble', '/borcegos/borcego-tison-tostado',
+      '/borcegos/borcego-tison-camel-edicion-limitada', '/borcegos/borcego-negro-milan-con-cierre'];
+    return {
+      'borcegos-de-hombre-como-elegir-el-tuyo-modelos-colores-y-talles': {
+        fecha: '2026-11-24',
+        productos: { tras: /nuestros borcegos/i, lista: BORCEGOS },
+        fotos: [
+          { tras: /qué color/i, imgs: [[I + '30140df42f54d390b609b5d21b540fc94af2ead48eb112e84020dd1e4a4d3d4510140.png', 'Tison Negro: total black'],
+            [I + '71ea4473d921bdd6511f74afda89851e1fd89ce461e55dccded641de2c77cd9410140.jpg', 'Tison Roble'],
+            [I + '2335cbfebb0a3137bed493a1f7c2f7af12dbb2b0720410e20f5e0a2cd727b58a10140.jpg', 'Tison Camel']] },
+          { tras: /cómo combinarlos/i, imgs: [[I + 'c9239521d47d1b6818fedbab70889a8c73859b85911347affc0364531296e90b10140.jpg', 'Con jean'],
+            [I + '3ec355ea81c9de5a305786e54e3bfee7b0b225d76075d84b85bdfe48e6df7a7110140.jpg', 'Con bermuda'],
+            [I + '3eaa56d4efc50280aff3939353cebaa0fd5bd0e3cc90371899a16556e77a216010140.jpg', 'Con pantalón chino']] }
+        ],
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']]
+      }
+    };
+  }
+  function notaBlog() {
+    var m = location.pathname.match(/^\/blog\/([^\/]+)\/?$/);
+    var c = document.querySelector('.blog-article__content');
+    if (!m || !c || c.classList.contains('nb')) return;
+    c.classList.add('nb');
+    var nota = notasBlog()[m[1]] || {};
+
+    var css = '.nb{font-size:16px;line-height:1.75;color:#222;max-width:820px;margin:0 auto}' +
+      '.nb>p:first-child{font-size:18px;color:#333}' +
+      '.nb h2{font-size:24px;margin:40px 0 14px;text-transform:none;letter-spacing:0}' +
+      '.nb h2:after{content:"";display:block;width:56px;height:4px;background:#8a5a2b;border-radius:2px;margin-top:10px}' +
+      '.nb ul{padding-left:0;list-style:none}.nb ul li{position:relative;padding-left:26px;margin-bottom:8px}' +
+      '.nb ul li:before{content:"";position:absolute;left:4px;top:10px;width:10px;height:10px;border-radius:50%;background:#8a5a2b}' +
+      '.nb h3{font-size:16px;background:#f6f1ea;border-radius:10px 10px 0 0;padding:12px 14px;margin:12px 0 0;text-transform:none}' +
+      '.nb h3+p{border:1px solid #f0e9df;border-top:0;border-radius:0 0 10px 10px;padding:10px 14px;margin:0}' +
+      '.nb a{text-decoration:underline}' +
+      '.nb .nb-fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}' +
+      '.nb .nb-fotos figure{margin:0;border-radius:12px;overflow:hidden;background:#f3f3f3}' +
+      '.nb .nb-fotos img{display:block;width:100%;aspect-ratio:3/4;object-fit:cover}' +
+      '.nb .nb-fotos figcaption{font-size:13px;padding:6px 10px;color:#555}' +
+      '.nb .nb-prods{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin:18px 0}' +
+      '.nb .nb-prod{display:block;border:1px solid #eee;border-radius:12px;overflow:hidden;text-decoration:none!important;color:#111;background:#fff}' +
+      '.nb .nb-prod img{display:block;width:100%;aspect-ratio:1;object-fit:cover;background:#f5f5f5}' +
+      '.nb .nb-prod div{padding:10px}.nb .nb-prod b{display:block;font-size:14px;line-height:1.3;min-height:36px}' +
+      '.nb .nb-prod s{color:#999;font-size:13px;margin-right:6px}.nb .nb-prod span{font-weight:700;font-size:16px}' +
+      '.nb .nb-prod em{display:block;margin-top:8px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:7px;font-style:normal;font-size:13px;font-weight:600}' +
+      '.nb .nb-btns{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 10px}' +
+      '.nb .nb-btns a{flex:1 1 160px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:13px 16px;font-weight:600;text-decoration:none}' +
+      '.nb .nb-btns a.nb-wa{background:#25d366}' +
+      '@media(max-width:600px){.nb .nb-fotos{grid-template-columns:repeat(2,1fr)}.nb .nb-fotos figure:nth-child(3){display:none}}';
+    var st = document.createElement('style');
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    var despuesDe = function (re) {
+      var h = [].filter.call(c.querySelectorAll('h2'), function (x) { return re.test(x.textContent); })[0];
+      if (!h) return null;
+      var e = h;
+      while (e.nextElementSibling && e.nextElementSibling.tagName !== 'H2') e = e.nextElementSibling;
+      return e;
+    };
+
+    (nota.fotos || []).forEach(function (g) {
+      var ult = despuesDe(g.tras);
+      if (!ult) return;
+      var d = document.createElement('div');
+      d.className = 'nb-fotos';
+      d.innerHTML = g.imgs.map(function (x) { return '<figure><img loading="lazy" src="' + x[0] + '" alt="' + x[1] + '"><figcaption>' + x[1] + '</figcaption></figure>'; }).join('');
+      ult.insertAdjacentElement('afterend', d);
+    });
+
+    if (nota.productos) {
+      var ult = despuesDe(nota.productos.tras);
+      if (ult) {
+        var grilla = document.createElement('div');
+        grilla.className = 'nb-prods';
+        ult.insertAdjacentElement('afterend', grilla);
+        var fmt = function (n) { return '$' + Math.round(n).toLocaleString('es-AR'); };
+        nota.productos.lista.forEach(function (url) {
+          var a = document.createElement('a');
+          a.className = 'nb-prod';
+          a.href = url;
+          grilla.appendChild(a);
+          fetch(url).then(function (r) { return r.text(); }).then(function (h) {
+            var nombre = (h.match(/p_nombre\s*=\s*"([^"]+)"/) || [])[1];
+            var img = (h.match(/i_link_principal\s*=\s*['"]([^'"]+)/) || [])[1];
+            var sp = (h.match(/s_producto\s*=\s*(\{[^}]*\})/) || [])[1];
+            var p = {};
+            try { p = JSON.parse(sp); } catch (e) {}
+            if (!nombre) { a.remove(); return; }
+            a.innerHTML = '<img loading="lazy" src="' + (img || '') + '" alt="' + nombre + '"><div><b>' + nombre.replace(/\s+/g, ' ') + '</b>' +
+              (p.precio_anterior > p.precio ? '<s>' + fmt(p.precio_anterior) + '</s>' : '') + (p.precio ? '<span>' + fmt(p.precio) + '</span>' : '') +
+              '<em>Ver producto</em></div>';
+          }).catch(function () { a.remove(); });
+        });
+      }
+    }
+
+    var btns = document.createElement('div');
+    btns.className = 'nb-btns';
+    btns.innerHTML = (nota.botones || [['/borcegos', 'Ver borcegos']]).map(function (b) { return '<a href="' + b[0] + '">' + b[1] + '</a>'; }).join('') +
+      '<a class="nb-wa" href="https://wa.me/541178404747?text=Hola!%20Tengo%20una%20consulta" target="_blank" rel="noopener">Consultanos por WhatsApp</a>';
+    c.appendChild(btns);
+
+    // Datos de la nota para Google
+    var titulo = (document.querySelector('h1') || {}).textContent || document.title;
+    var primera = c.querySelector('.nb-fotos img, img');
+    var s = document.createElement('script');
+    s.type = 'application/ld+json';
+    var datos = {
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: titulo.trim().slice(0, 110),
+      mainEntityOfPage: location.origin + location.pathname,
+      author: { '@type': 'Person', '@id': 'https://www.canamo.com.ar/nuestra-historia#gabriel', name: 'Gabriel Guillermo Hagenbuch', url: 'https://www.canamo.com.ar/nuestra-historia' },
+      publisher: { '@type': 'Organization', '@id': 'https://www.canamo.com.ar/#empresa', name: 'Canamo', logo: { '@type': 'ImageObject', url: 'https://d22fxaf9t8d39k.cloudfront.net/3509ce1d12c19379d0be911b24cd471fa5f2629332f58e72183a7ef058193d8410140.png' } }
+    };
+    if (nota.fecha) datos.datePublished = nota.fecha;
+    if (primera) datos.image = primera.src;
+    s.textContent = JSON.stringify(datos);
     document.head.appendChild(s);
   }
 
