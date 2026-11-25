@@ -734,9 +734,24 @@
             [I + '2335cbfebb0a3137bed493a1f7c2f7af12dbb2b0720410e20f5e0a2cd727b58a10140.jpg', 'Tison Camel']] },
           { tras: /cómo combinarlos/i, imgs: [[I + 'c9239521d47d1b6818fedbab70889a8c73859b85911347affc0364531296e90b10140.jpg', 'Con jean'],
             [I + '3ec355ea81c9de5a305786e54e3bfee7b0b225d76075d84b85bdfe48e6df7a7110140.jpg', 'Con bermuda'],
-            [I + '3eaa56d4efc50280aff3939353cebaa0fd5bd0e3cc90371899a16556e77a216010140.jpg', 'Con pantalón chino']] }
+            [I + '3eaa56d4efc50280aff3939353cebaa0fd5bd0e3cc90371899a16556e77a216010140.jpg', 'Look urbano']] }
         ],
-        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']]
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
+        titulo: 'Borcegos de hombre: cómo elegir el tuyo'
+      },
+      'borcegos-negros-de-hombre-tison-o-milan-cual-elegir-y-como-usarlos': {
+        fecha: '2026-11-24',
+        productos: { tras: /nuestros borcegos negros/i, lista: ['/borcegos/borcego-tison-negro', '/borcegos/borcego-negro-milan-con-cierre'] },
+        fotos: [
+          { tras: /tison o milan/i, imgs: [[I + '30140df42f54d390b609b5d21b540fc94af2ead48eb112e84020dd1e4a4d3d4510140.png', 'Tison Negro'],
+            [I + '0744c127ff1710e91daf669c9e7a9216e2920548e69c7d87bcd1293962c07a1210140.jpg', 'Milan Negro con cierre'],
+            [I + 'a67e030902393dd6ffe6518c2980f40c2be8450b8ee900f80196c49eb3b8c0ac10140.jpg', 'Milan en la calle']] },
+          { tras: /cómo combinar/i, imgs: [[I + 'f38a9fd2e2d99fbe0dd654c0443ba1c04148f1cf5adb97ddd492017d391b6d9210140.png', 'Con jean'],
+            [I + '0d7a221cc9ee0e4151f49dce2391c173382e4c50f605293108d9be419ccd15c810140.png', 'Total black'],
+            [I + '7e695e26b1efffab5f339230b93ac2c1488cb3962cb19cd254ac658833f8e29410140.jpg', 'Con jean y sweater']] }
+        ],
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
+        titulo: 'Borcegos negros: Tison o Milan, cuál elegir'
       }
     };
   }
@@ -745,7 +760,8 @@
     var c = document.querySelector('.blog-article__content');
     if (!m || !c || c.classList.contains('nb')) return;
     c.classList.add('nb');
-    var nota = notasBlog()[m[1]] || {};
+    var todas = notasBlog();
+    var nota = todas[m[1]] || {};
 
     var css = '.nb{font-size:16px;line-height:1.75;color:#222;max-width:820px;margin:0 auto}' +
       '.nb>p:first-child{font-size:18px;color:#333}' +
@@ -769,6 +785,8 @@
       '.nb .nb-btns{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 10px}' +
       '.nb .nb-btns a{flex:1 1 160px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:13px 16px;font-weight:600;text-decoration:none}' +
       '.nb .nb-btns a.nb-wa{background:#25d366}' +
+      '.nb .nb-prod{display:flex;flex-direction:column}.nb .nb-prod div{display:flex;flex-direction:column;flex:1}.nb .nb-prod em{margin-top:auto}.nb .nb-prod b{margin-bottom:6px}' +
+      '.nb .nb-mas{background:#f6f1ea;border-radius:14px;padding:16px 18px;margin-top:20px}.nb .nb-mas p{margin:0 0 6px}.nb .nb-mas a{display:block;padding:6px 0;font-weight:600;color:#111}' +
       '@media(max-width:600px){.nb .nb-fotos{grid-template-columns:repeat(2,1fr)}.nb .nb-fotos figure:nth-child(3){display:none}}';
     var st = document.createElement('style');
     st.textContent = css;
@@ -823,6 +841,15 @@
     btns.innerHTML = (nota.botones || [['/borcegos', 'Ver borcegos']]).map(function (b) { return '<a href="' + b[0] + '">' + b[1] + '</a>'; }).join('') +
       '<a class="nb-wa" href="https://wa.me/541178404747?text=Hola!%20Tengo%20una%20consulta" target="_blank" rel="noopener">Consultanos por WhatsApp</a>';
     c.appendChild(btns);
+
+    // Seguí leyendo: links a las otras notas
+    var otras = Object.keys(todas).filter(function (k) { return k !== m[1] && todas[k].titulo; });
+    if (otras.length) {
+      var mas = document.createElement('div');
+      mas.className = 'nb-mas';
+      mas.innerHTML = '<p><strong>Seguí leyendo</strong></p>' + otras.map(function (k) { return '<a href="/blog/' + k + '">' + todas[k].titulo + ' →</a>'; }).join('');
+      c.appendChild(mas);
+    }
 
     // Datos de la nota para Google
     var titulo = (document.querySelector('h1') || {}).textContent || document.title;
