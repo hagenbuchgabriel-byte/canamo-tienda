@@ -766,6 +766,26 @@
         ],
         botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
         titulo: 'Borcegos marrones y camel: Roble, Tostado o Camel'
+      },
+      'como-combinar-borcegos-de-hombre-looks-para-cada-ocasion': {
+        fecha: '2026-11-24',
+        productos: { tras: /elegí tu borcego/i, lista: BORCEGOS },
+        fotos: [
+          { tras: /todos los días/i, imgs: [[I + 'c9239521d47d1b6818fedbab70889a8c73859b85911347affc0364531296e90b10140.jpg', 'Tison Camel con jean'],
+            [I + '6f8bd52b08e6b3fda62a6a6d9123c526a1bf56315aff1a61addd72cec1a55f7d10140.png', 'Tison Negro con jean'],
+            [I + '7e695e26b1efffab5f339230b93ac2c1488cb3962cb19cd254ac658833f8e29410140.jpg', 'Milan con jean y sweater']] },
+          { tras: /para el trabajo/i, imgs: [[I + 'f38a9fd2e2d99fbe0dd654c0443ba1c04148f1cf5adb97ddd492017d391b6d9210140.png', 'Tison Negro, look prolijo'],
+            [I + '3eaa56d4efc50280aff3939353cebaa0fd5bd0e3cc90371899a16556e77a216010140.jpg', 'Milan con campera'],
+            [I + '21ca0fbb6d08f77977419e375721c3d39f529e13702d0126994f5ed17a72b2f510140.jpg', 'Tison Roble con saco']] },
+          { tras: /fin de semana/i, imgs: [[I + '3ec355ea81c9de5a305786e54e3bfee7b0b225d76075d84b85bdfe48e6df7a7110140.jpg', 'Con bermuda'],
+            [I + 'ff27009ad8486e7bf619d99856e86895cd58c7b679dcfc5804415df96a1a68e010140.jpg', 'Look de verano'],
+            [I + 'a599107eef7e9b64e1aef5fa9406283a3488af4ae50e51da19b61198f6b571d310140.jpg', 'Tison Tostado en la calle']] },
+          { tras: /total black/i, imgs: [[I + '71ea4473d921bdd6511f74afda89851e1fd89ce461e55dccded641de2c77cd9410140.jpg', 'Tison Negro'],
+            [I + 'a67e030902393dd6ffe6518c2980f40c2be8450b8ee900f80196c49eb3b8c0ac10140.jpg', 'Milan Negro'],
+            [I + '30140df42f54d390b609b5d21b540fc94af2ead48eb112e84020dd1e4a4d3d4510140.png', 'Detalle del Tison Negro']] }
+        ],
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
+        titulo: 'Cómo combinar borcegos de hombre: looks para cada ocasión'
       }
     };
   }
