@@ -701,12 +701,12 @@
         name: 'Gabriel Guillermo Hagenbuch',
         alternateName: 'Gabriel Hagenbuch',
         jobTitle: 'Fundador y CEO de Canamo',
-        description: 'Emprendedor y consultor en comercio digital y marketing digital. Fundador y CEO de Canamo, fábrica de calzado en Mataderos, Buenos Aires. Filmmaker.',
+        description: 'Emprendedor y consultor en comercio digital y marketing digital. Fundador y CEO de Canamo, fábrica de calzado en Mataderos, Buenos Aires.',
         image: F + 'historia-gabriel.jpg',
         worksFor: { '@type': 'Organization', '@id': 'https://www.canamo.com.ar/#empresa', name: 'Canamo', url: 'https://www.canamo.com.ar/' },
         hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Experto Universitario en Negocios Digitales y Marketing Digital', recognizedBy: { '@type': 'CollegeOrUniversity', name: 'Universidad Tecnológica Nacional (UTN)' } },
         alumniOf: { '@type': 'CollegeOrUniversity', name: 'Universidad Tecnológica Nacional (UTN)' },
-        knowsAbout: ['Marketing digital', 'Comercio electrónico', 'Negocios digitales', 'Fabricación de calzado', 'Filmmaking'],
+        knowsAbout: ['Marketing digital', 'Comercio electrónico', 'Negocios digitales', 'Fabricación de calzado'],
         homeLocation: { '@type': 'Place', name: 'Buenos Aires, Argentina' }
       }
     });
