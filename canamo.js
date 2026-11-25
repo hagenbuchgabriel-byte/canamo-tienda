@@ -594,7 +594,7 @@
     md.content = 'La historia de Canamo y de su fundador y CEO, Gabriel Guillermo Hagenbuch: emprendedor, consultor en comercio y marketing digital y Experto Universitario (UTN).';
 
     var css = '.nh{max-width:900px;margin:0 auto;font-size:16px;line-height:1.7;color:#222}' +
-      '.nh-hero{position:relative;border-radius:18px;overflow:hidden;min-height:340px;display:flex;align-items:flex-end;background:#111 center/cover no-repeat;margin-bottom:34px}' +
+      '.nh-hero{position:relative;border-radius:18px;overflow:hidden;min-height:420px;display:flex;align-items:flex-end;background:#111 45% 15%/cover no-repeat;margin-bottom:34px}' +
       '.nh-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.8))}' +
       '.nh-hero div{position:relative;padding:28px;color:#fff}' +
       '.nh-hero .nh-big{font-size:30px;line-height:1.2;font-weight:700;margin:0 0 8px}' +
@@ -608,8 +608,8 @@
       '.nh .nh-item:before{content:"";position:absolute;left:-40px;top:6px;width:17px;height:17px;border-radius:50%;background:#8a5a2b;border:3px solid #fff;box-shadow:0 0 0 2px #8a5a2b}' +
       '.nh .nh-item h3{font-size:19px;margin:0 0 6px;text-transform:none}' +
       '.nh .nh-item p{margin:0}' +
-      '.nh .nh-foto{margin:14px 0 0;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.12)}' +
-      '.nh .nh-foto img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}' +
+      '.nh .nh-foto{margin:14px 0 0;max-width:640px;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.12)}' +
+      '.nh .nh-foto img{display:block;width:100%;height:380px;object-fit:cover;object-position:center 30%}' +
       '.nh .nh-foto figcaption{font-size:13px;color:#777;padding:8px 12px;background:#fff}' +
       '.nh .nh-nums{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}' +
       '.nh .nh-nums li{background:#111;color:#fff;border-radius:16px;padding:22px 16px;text-align:center}' +
@@ -617,7 +617,7 @@
       '.nh .nh-btns{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 10px}' +
       '.nh .nh-btns a{flex:1 1 160px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:13px 16px;font-weight:600;text-decoration:none}' +
       '.nh .nh-btns a.nh-wa{background:#25d366}' +
-      '@media(max-width:600px){.nh-hero{min-height:280px}.nh-hero .nh-big{font-size:24px}}';
+      '@media(max-width:600px){.nh-hero{min-height:380px}.nh-hero .nh-big{font-size:24px}.nh .nh-foto img{height:300px}}';
     var st = document.createElement('style');
     st.textContent = css;
     document.head.appendChild(st);
