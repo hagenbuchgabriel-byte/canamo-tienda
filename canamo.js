@@ -35,6 +35,7 @@
   try { guiaTalles(); } catch (e) {}
   try { historia(); } catch (e) {}
   try { notaBlog(); } catch (e) {}
+  try { opiniones(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -916,6 +917,108 @@
     if (primera) datos.image = primera.src;
     s.textContent = JSON.stringify(datos);
     document.head.appendChild(s);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Opiniones (/opiniones): el texto y las resenas se cargan en         */
+  /* Empretienda (Editar paginas). Las resenas son reales, de la ficha   */
+  /* de Google Maps. Aca: resumen 4,8, tarjetas con estrellas y botones. */
+  /* (Sin datos de estrellas para Google: no permite resenas propias.)   */
+  /* ------------------------------------------------------------------ */
+  function opiniones() {
+    if (location.pathname.replace(/\/$/, '') !== '/opiniones') return;
+    var c = document.querySelector('.page__content');
+    if (!c || c.classList.contains('op')) return;
+    c.classList.add('op');
+    var MAPS = 'https://www.google.com/maps/place/?q=place_id:ChIJ90_lifbJvJURF_RPEvAnSWo';
+    var RESENA = 'https://search.google.com/local/writereview?placeid=ChIJ90_lifbJvJURF_RPEvAnSWo';
+
+    document.title = 'Opiniones de Canamo, fábrica de calzados en Buenos Aires | 4,8 en Google';
+    var md = document.querySelector('meta[name="description"]');
+    if (!md) { md = document.createElement('meta'); md.name = 'description'; document.head.appendChild(md); }
+    md.content = 'Opiniones reales de clientes de Canamo, fábrica de calzados en Mataderos (CABA): 4,8 estrellas en Google con más de 70 reseñas. Borcegos, zapatos y zapatillas hechos a mano.';
+
+    var css = '.op{max-width:900px;margin:0 auto;font-size:16px;line-height:1.7;color:#222}' +
+      '.op>p:first-child{font-size:18px}' +
+      '.op h2{font-size:24px;margin:40px 0 14px;text-transform:none;letter-spacing:0}' +
+      '.op h2:after{content:"";display:block;width:56px;height:4px;background:#8a5a2b;border-radius:2px;margin-top:10px}' +
+      '.op .op-nota{display:flex;flex-wrap:wrap;align-items:center;gap:22px;background:#111;color:#fff;border-radius:18px;padding:24px 26px;margin:20px 0}' +
+      '.op .op-num{font-size:64px;font-weight:800;line-height:1;color:#f3c98b}' +
+      '.op .op-est{color:#f5b301;font-size:26px;letter-spacing:2px}' +
+      '.op .op-nota p{margin:2px 0;color:#eee}' +
+      '.op .op-nota a{display:inline-block;margin-top:8px;background:#fff;color:#111;border-radius:999px;padding:8px 16px;font-weight:600;text-decoration:none}' +
+      '.op .op-datos{display:flex;gap:10px;flex-wrap:wrap;margin-left:auto}' +
+      '.op .op-datos div{background:#222;border-radius:12px;padding:10px 14px;text-align:center;font-size:13px;color:#ccc}' +
+      '.op .op-datos b{display:block;font-size:22px;color:#fff}' +
+      '.op .op-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;padding:0;list-style:none}' +
+      '.op .op-grid li{background:#fff;border:1px solid #eee;border-radius:14px;padding:16px 18px;box-shadow:0 4px 14px rgba(0,0,0,.05);display:flex;flex-direction:column}' +
+      '.op .op-grid .op-est{font-size:18px}' +
+      '.op .op-grid q{display:block;margin:6px 0 12px;font-size:15px;quotes:none}' +
+      '.op .op-grid small{margin-top:auto;display:flex;align-items:center;gap:8px;color:#555;font-weight:600}' +
+      '.op .op-grid small i{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#8a5a2b;color:#fff;font-style:normal}' +
+      '.op .op-grid small span{font-weight:400;color:#888;font-size:12px}' +
+      '.op ul.op-lista{padding:0;list-style:none}.op ul.op-lista li{position:relative;padding-left:26px;margin-bottom:8px}' +
+      '.op ul.op-lista li:before{content:"✓";position:absolute;left:2px;top:0;color:#8a5a2b;font-weight:800}' +
+      '.op h3{font-size:16px;background:#f6f1ea;border-radius:10px 10px 0 0;padding:12px 14px;margin:12px 0 0;text-transform:none}' +
+      '.op h3+p{border:1px solid #f0e9df;border-top:0;border-radius:0 0 10px 10px;padding:10px 14px;margin:0}' +
+      '.op .op-cta{background:#f6f1ea;border-radius:14px;padding:18px 20px}' +
+      '.op .op-cta a{display:inline-block;margin:8px 8px 0 0;background:#111;color:#fff;border-radius:999px;padding:10px 18px;font-weight:600;text-decoration:none}' +
+      '.op .op-btns{display:flex;flex-wrap:wrap;gap:10px;margin:30px 0 10px}' +
+      '.op .op-btns a{flex:1 1 160px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:13px 16px;font-weight:600;text-decoration:none}' +
+      '.op .op-btns a.op-wa{background:#25d366}';
+    var st = document.createElement('style');
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    var seccion = function (re) {
+      var h = [].filter.call(c.querySelectorAll('h2'), function (x) { return re.test(x.textContent); })[0];
+      var sig = [], n = h && h.nextElementSibling;
+      while (n && n.tagName !== 'H2') { sig.push(n); n = n.nextElementSibling; }
+      return { h: h, sig: sig };
+    };
+
+    // Resumen de Google
+    var g = seccion(/estrellas en google/i);
+    if (g.h) {
+      var box = document.createElement('div');
+      box.className = 'op-nota';
+      box.innerHTML = '<div class="op-num">4,8</div><div><div class="op-est">★★★★★</div><p><strong>Más de 70 opiniones en Google</strong></p><p>64 con 5 estrellas</p>' +
+        '<a href="' + MAPS + '" target="_blank" rel="noopener">Ver todas en Google Maps</a></div>' +
+        '<div class="op-datos"><div><b>40.000</b>clientes</div><div><b>2020</b>desde</div><div><b>73 mil</b>en Instagram</div></div>';
+      g.sig.forEach(function (e) { e.remove(); });
+      g.h.insertAdjacentElement('afterend', box);
+    }
+
+    // Resenas: "texto — Nombre I." -> tarjetas
+    var r = seccion(/dicen nuestros clientes/i);
+    r.sig.forEach(function (ul) {
+      if (ul.tagName !== 'UL') return;
+      ul.className = 'op-grid';
+      [].forEach.call(ul.querySelectorAll('li'), function (li) {
+        var t = li.textContent, i = t.lastIndexOf(' — ');
+        if (i < 0) return;
+        var nombre = t.slice(i + 3).trim();
+        li.innerHTML = '<div class="op-est">★★★★★</div><q>“' + t.slice(0, i).trim() + '”</q>' +
+          '<small><i>' + nombre.charAt(0) + '</i><div>' + nombre + '<br><span>Opinión en Google</span></div></small>';
+      });
+    });
+
+    var p = seccion(/por qué nos eligen/i);
+    p.sig.forEach(function (e) { if (e.tagName === 'UL') e.className = 'op-lista'; });
+
+    var d = seccion(/dejanos tu opinión/i);
+    d.sig.forEach(function (e) {
+      if (e.tagName !== 'P') return;
+      e.className = 'op-cta';
+      e.innerHTML = e.innerHTML.replace(/ o (<a )/, ' $1');
+      [].forEach.call(e.querySelectorAll('a'), function (a) { a.target = '_blank'; a.rel = 'noopener'; });
+    });
+
+    var btns = document.createElement('div');
+    btns.className = 'op-btns';
+    btns.innerHTML = '<a href="/borcegos">Ver borcegos</a><a href="/nuestra-historia">Nuestra historia</a>' +
+      '<a class="op-wa" href="https://wa.me/541178404747?text=Hola!%20Tengo%20una%20consulta" target="_blank" rel="noopener">Escribinos por WhatsApp</a>';
+    c.appendChild(btns);
   }
 
   function medirCompra() {
