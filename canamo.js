@@ -752,6 +752,20 @@
         ],
         botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
         titulo: 'Borcegos negros: Tison o Milan, cuál elegir'
+      },
+      'borcegos-marrones-y-camel-para-hombre-roble-tostado-o-camel-cual-elegir': {
+        fecha: '2026-11-24',
+        productos: { tras: /nuestros borcegos marrones/i, lista: ['/borcegos/borcego-tison-roble', '/borcegos/borcego-tison-tostado', '/borcegos/borcego-tison-camel-edicion-limitada'] },
+        fotos: [
+          { tras: /cuál te conviene/i, imgs: [[I + '21ca0fbb6d08f77977419e375721c3d39f529e13702d0126994f5ed17a72b2f510140.jpg', 'Tison Roble'],
+            [I + 'a599107eef7e9b64e1aef5fa9406283a3488af4ae50e51da19b61198f6b571d310140.jpg', 'Tison Tostado'],
+            [I + '2335cbfebb0a3137bed493a1f7c2f7af12dbb2b0720410e20f5e0a2cd727b58a10140.jpg', 'Tison Camel']] },
+          { tras: /cómo combinar/i, imgs: [[I + 'c9239521d47d1b6818fedbab70889a8c73859b85911347affc0364531296e90b10140.jpg', 'Camel con jean'],
+            [I + '3de47e72bcfa5d59f240db09cae3e7e0090e8de14292789e5bb86baa6177f97710140.jpg', 'Roble en la ciudad'],
+            [I + 'ff27009ad8486e7bf619d99856e86895cd58c7b679dcfc5804415df96a1a68e010140.jpg', 'Tostado, look de verano']] }
+        ],
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
+        titulo: 'Borcegos marrones y camel: Roble, Tostado o Camel'
       }
     };
   }
