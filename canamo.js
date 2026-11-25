@@ -729,8 +729,8 @@
         fecha: '2026-11-24',
         productos: { tras: /nuestros borcegos/i, lista: BORCEGOS },
         fotos: [
-          { tras: /qué color/i, imgs: [[I + '30140df42f54d390b609b5d21b540fc94af2ead48eb112e84020dd1e4a4d3d4510140.png', 'Tison Negro: total black'],
-            [I + '71ea4473d921bdd6511f74afda89851e1fd89ce461e55dccded641de2c77cd9410140.jpg', 'Tison Roble'],
+          { tras: /qué color/i, imgs: [[I + 'f38a9fd2e2d99fbe0dd654c0443ba1c04148f1cf5adb97ddd492017d391b6d9210140.png', 'Tison Negro: total black'],
+            [I + '21ca0fbb6d08f77977419e375721c3d39f529e13702d0126994f5ed17a72b2f510140.jpg', 'Tison Roble'],
             [I + '2335cbfebb0a3137bed493a1f7c2f7af12dbb2b0720410e20f5e0a2cd727b58a10140.jpg', 'Tison Camel']] },
           { tras: /cómo combinarlos/i, imgs: [[I + 'c9239521d47d1b6818fedbab70889a8c73859b85911347affc0364531296e90b10140.jpg', 'Con jean'],
             [I + '3ec355ea81c9de5a305786e54e3bfee7b0b225d76075d84b85bdfe48e6df7a7110140.jpg', 'Con bermuda'],
@@ -743,11 +743,11 @@
         fecha: '2026-11-24',
         productos: { tras: /nuestros borcegos negros/i, lista: ['/borcegos/borcego-tison-negro', '/borcegos/borcego-negro-milan-con-cierre'] },
         fotos: [
-          { tras: /tison o milan/i, imgs: [[I + '30140df42f54d390b609b5d21b540fc94af2ead48eb112e84020dd1e4a4d3d4510140.png', 'Tison Negro'],
+          { tras: /tison o milan/i, imgs: [[I + 'f38a9fd2e2d99fbe0dd654c0443ba1c04148f1cf5adb97ddd492017d391b6d9210140.png', 'Tison Negro'],
             [I + '0744c127ff1710e91daf669c9e7a9216e2920548e69c7d87bcd1293962c07a1210140.jpg', 'Milan Negro con cierre'],
             [I + 'a67e030902393dd6ffe6518c2980f40c2be8450b8ee900f80196c49eb3b8c0ac10140.jpg', 'Milan en la calle']] },
-          { tras: /cómo combinar/i, imgs: [[I + 'f38a9fd2e2d99fbe0dd654c0443ba1c04148f1cf5adb97ddd492017d391b6d9210140.png', 'Con jean'],
-            [I + '0d7a221cc9ee0e4151f49dce2391c173382e4c50f605293108d9be419ccd15c810140.png', 'Total black'],
+          { tras: /cómo combinar/i, imgs: [[I + '6f8bd52b08e6b3fda62a6a6d9123c526a1bf56315aff1a61addd72cec1a55f7d10140.png', 'Con jean'],
+            [I + '71ea4473d921bdd6511f74afda89851e1fd89ce461e55dccded641de2c77cd9410140.jpg', 'Total black'],
             [I + '7e695e26b1efffab5f339230b93ac2c1488cb3962cb19cd254ac658833f8e29410140.jpg', 'Con jean y sweater']] }
         ],
         botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
