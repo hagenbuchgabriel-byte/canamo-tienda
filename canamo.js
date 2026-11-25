@@ -786,6 +786,20 @@
         ],
         botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
         titulo: 'Cómo combinar borcegos de hombre: looks para cada ocasión'
+      },
+      'como-cuidar-tus-borcegos-limpieza-secado-y-trucos-para-que-duren-mas': {
+        fecha: '2026-11-24',
+        productos: { tras: /hechos para durar/i, lista: BORCEGOS },
+        fotos: [
+          { tras: /limpieza de todos/i, imgs: [[I + '97ce4d607636e1fffb2d80f997a6018809ce42c703c232c7fe1a848029d5952510140.png', 'Tison Negro'],
+            [I + 'b81c6ce20d320f0b31496f1bd5236e45896f684e1d11f9878767488348bd468210140.jpg', 'Milan Negro con cierre'],
+            [I + '9c94f8fdaf7b7263ee5d299f8414ad64c18e87380991467354d6d448cb21762310140.jpg', 'Tison Roble']] },
+          { tras: /suela y los cordones/i, imgs: [[I + 'c30ab2d7f62ac30669662f4aa4c149a7949c0afc81bf5efe0c4063dc6c7d679610140.png', 'Tison Tostado'],
+            [I + '65e6db848984bc1499212fd50bcb27bc249ccc9909b7ce4d965df1e54e56b21610140.jpg', 'Tison Camel'],
+            [I + 'e93b696360d6e240ad5ca841f3fb830ba4050ad085d97171151903a33f6f16d810140.jpg', 'Milan: base tractor']] }
+        ],
+        botones: [['/borcegos', 'Ver todos los borcegos'], ['/guia-de-talles', 'Guía de talles']],
+        titulo: 'Cómo cuidar tus borcegos para que duren más'
       }
     };
   }
