@@ -33,6 +33,7 @@
   try { textosCategoria(); } catch (e) {}
   try { datosEmpresa(); } catch (e) {}
   try { guiaTalles(); } catch (e) {}
+  try { historia(); } catch (e) {}
   var form = document.getElementById('add_to_cart-form');
   if (!form || typeof stock === 'undefined') return; // no es una pagina de producto
 
@@ -456,6 +457,8 @@
         dias('https://schema.org/Saturday', '10:00', '13:00')
       ],
       areaServed: 'AR',
+      foundingDate: '2020',
+      founder: { '@type': 'Person', '@id': 'https://www.canamo.com.ar/nuestra-historia#gabriel', name: 'Gabriel Guillermo Hagenbuch', url: 'https://www.canamo.com.ar/nuestra-historia' },
       sameAs: [
         'https://www.instagram.com/canamo.calzado/',
         'https://www.facebook.com/Canamo-100576335054386'
@@ -569,6 +572,145 @@
     btns.innerHTML = '<a href="/borcegos">Ver borcegos</a><a href="/zapatos">Ver zapatos</a><a href="/zapatillas">Ver zapatillas</a>' +
       '<a class="gt-wa" href="https://wa.me/541178404747?text=Hola!%20Tengo%20una%20duda%20con%20el%20talle" target="_blank" rel="noopener">Consultar por WhatsApp</a>';
     c.appendChild(btns);
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* Nuestra historia (/nuestra-historia): el texto se carga en         */
+  /* Empretienda (Editar paginas). Aca: portada con foto, linea de      */
+  /* tiempo, fotos, numeros grandes, botones y datos de Gabriel para    */
+  /* Google. Fotos: archivos historia-*.jpg en el repo de GitHub.       */
+  /* ------------------------------------------------------------------ */
+  function historia() {
+    if (location.pathname.replace(/\/$/, '') !== '/nuestra-historia') return;
+    var c = document.querySelector('.page__content');
+    if (!c || c.classList.contains('nh')) return;
+    c.classList.add('nh');
+    var F = 'https://hagenbuchgabriel-byte.github.io/canamo-tienda/';
+    var URL_P = 'https://www.canamo.com.ar/nuestra-historia';
+
+    document.title = 'Gabriel Guillermo Hagenbuch, fundador de Canamo | Nuestra historia';
+    var md = document.querySelector('meta[name="description"]');
+    if (!md) { md = document.createElement('meta'); md.name = 'description'; document.head.appendChild(md); }
+    md.content = 'La historia de Canamo y de su fundador y CEO, Gabriel Guillermo Hagenbuch: emprendedor, consultor en comercio y marketing digital y Experto Universitario (UTN).';
+
+    var css = '.nh{max-width:900px;margin:0 auto;font-size:16px;line-height:1.7;color:#222}' +
+      '.nh-hero{position:relative;border-radius:18px;overflow:hidden;min-height:340px;display:flex;align-items:flex-end;background:#111 center/cover no-repeat;margin-bottom:34px}' +
+      '.nh-hero:before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05) 30%,rgba(0,0,0,.8))}' +
+      '.nh-hero div{position:relative;padding:28px;color:#fff}' +
+      '.nh-hero .nh-big{font-size:30px;line-height:1.2;font-weight:700;margin:0 0 8px}' +
+      '.nh-hero .nh-sub{font-size:17px;opacity:.9;margin:0}' +
+      '.nh h2{font-size:26px;margin:44px 0 16px;text-transform:none;letter-spacing:0}' +
+      '.nh h2:after{content:"";display:block;width:56px;height:4px;background:#8a5a2b;border-radius:2px;margin-top:10px}' +
+      '.nh .nh-founder{background:#f6f1ea;border-radius:16px;padding:22px 24px;font-size:17px}' +
+      '.nh .nh-founder p{margin:0 0 10px}' +
+      '.nh .nh-tl{position:relative;padding-left:30px;border-left:3px solid #e6dccf;margin-left:10px}' +
+      '.nh .nh-item{position:relative;margin-bottom:26px}' +
+      '.nh .nh-item:before{content:"";position:absolute;left:-40px;top:6px;width:17px;height:17px;border-radius:50%;background:#8a5a2b;border:3px solid #fff;box-shadow:0 0 0 2px #8a5a2b}' +
+      '.nh .nh-item h3{font-size:19px;margin:0 0 6px;text-transform:none}' +
+      '.nh .nh-item p{margin:0}' +
+      '.nh .nh-foto{margin:14px 0 0;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.12)}' +
+      '.nh .nh-foto img{display:block;width:100%;height:auto;max-height:520px;object-fit:cover}' +
+      '.nh .nh-foto figcaption{font-size:13px;color:#777;padding:8px 12px;background:#fff}' +
+      '.nh .nh-nums{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}' +
+      '.nh .nh-nums li{background:#111;color:#fff;border-radius:16px;padding:22px 16px;text-align:center}' +
+      '.nh .nh-nums b{display:block;font-size:36px;line-height:1.1;color:#f3c98b;margin-bottom:6px}' +
+      '.nh .nh-btns{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0 10px}' +
+      '.nh .nh-btns a{flex:1 1 160px;text-align:center;background:#111;color:#fff;border-radius:999px;padding:13px 16px;font-weight:600;text-decoration:none}' +
+      '.nh .nh-btns a.nh-wa{background:#25d366}' +
+      '@media(max-width:600px){.nh-hero{min-height:280px}.nh-hero .nh-big{font-size:24px}}';
+    var st = document.createElement('style');
+    st.textContent = css;
+    document.head.appendChild(st);
+
+    var foto = function (archivo, texto) {
+      var f = document.createElement('figure');
+      f.className = 'nh-foto';
+      f.innerHTML = '<img loading="lazy" src="' + F + archivo + '" alt="' + texto + '"><figcaption>' + texto + '</figcaption>';
+      f.querySelector('img').onerror = function () { f.remove(); };
+      return f;
+    };
+
+    // Portada: los dos primeros parrafos sobre la foto de Gabriel
+    var p1 = c.querySelector('p'), p2 = p1 && p1.nextElementSibling;
+    if (p1) {
+      var hero = document.createElement('div');
+      hero.className = 'nh-hero';
+      hero.style.backgroundImage = 'url(' + F + 'historia-gabriel.jpg)';
+      hero.setAttribute('role', 'img');
+      hero.setAttribute('aria-label', 'Gabriel Guillermo Hagenbuch, fundador y CEO de Canamo');
+      hero.innerHTML = '<div><p class="nh-big">' + p1.innerHTML + '</p>' + (p2 && p2.tagName === 'P' ? '<p class="nh-sub">' + p2.innerHTML + '</p>' : '') + '</div>';
+      c.insertBefore(hero, p1);
+      p1.remove();
+      if (p2 && p2.tagName === 'P') p2.remove();
+    }
+
+    // Secciones por h2
+    c.querySelectorAll('h2').forEach(function (h2) {
+      var t = h2.textContent;
+      var sig = [], n = h2.nextElementSibling;
+      while (n && n.tagName !== 'H2') { sig.push(n); n = n.nextElementSibling; }
+      if (/fundador/i.test(t)) {
+        var box = document.createElement('div');
+        box.className = 'nh-founder';
+        h2.insertAdjacentElement('afterend', box);
+        sig.forEach(function (e) { box.appendChild(e); });
+      } else if (sig.some(function (e) { return e.tagName === 'H3'; })) {
+        var tl = document.createElement('div');
+        tl.className = 'nh-tl';
+        h2.insertAdjacentElement('afterend', tl);
+        var item = null;
+        sig.forEach(function (e) {
+          if (e.tagName === 'H3') { item = document.createElement('div'); item.className = 'nh-item'; tl.appendChild(item); }
+          (item || tl).appendChild(e);
+          if (e.tagName === 'P' && item) {
+            var h = item.querySelector('h3').textContent;
+            if (/desde abajo/i.test(h)) item.appendChild(foto('historia-gabriel-isa.jpg', 'Gabriel con uno de nuestros proveedores'));
+            if (/oficio/i.test(h)) item.appendChild(foto('historia-borcegos.jpg', 'Nuestros borcegos en plena producción'));
+            if (/^hoy/i.test(h)) item.appendChild(foto('historia-taller.jpg', 'Gabriel en el taller'));
+          }
+        });
+      } else {
+        sig.forEach(function (e) {
+          if (e.tagName !== 'UL') return;
+          e.className = 'nh-nums';
+          e.querySelectorAll('li').forEach(function (li) {
+            var partes = li.textContent.split(' — ');
+            if (partes.length === 2) li.innerHTML = '<b>' + partes[0] + '</b>' + partes[1];
+          });
+        });
+      }
+    });
+
+    var btns = document.createElement('div');
+    btns.className = 'nh-btns';
+    btns.innerHTML = '<a href="/borcegos">Ver borcegos</a><a href="/zapatos">Ver zapatos</a><a href="/zapatillas">Ver zapatillas</a>' +
+      '<a class="nh-wa" href="https://wa.me/541178404747?text=Hola!%20Quiero%20visitar%20el%20local" target="_blank" rel="noopener">Escribinos por WhatsApp</a>';
+    c.appendChild(btns);
+
+    // Datos de Gabriel para Google (para que aparezca al buscarlo)
+    var s = document.createElement('script');
+    s.type = 'application/ld+json';
+    s.textContent = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'ProfilePage',
+      url: URL_P,
+      name: 'Nuestra historia - Canamo',
+      mainEntity: {
+        '@type': 'Person',
+        '@id': URL_P + '#gabriel',
+        name: 'Gabriel Guillermo Hagenbuch',
+        alternateName: 'Gabriel Hagenbuch',
+        jobTitle: 'Fundador y CEO de Canamo',
+        description: 'Emprendedor y consultor en comercio digital y marketing digital. Fundador y CEO de Canamo, fábrica de calzado en Mataderos, Buenos Aires. Filmmaker.',
+        image: F + 'historia-gabriel.jpg',
+        worksFor: { '@type': 'Organization', '@id': 'https://www.canamo.com.ar/#empresa', name: 'Canamo', url: 'https://www.canamo.com.ar/' },
+        hasCredential: { '@type': 'EducationalOccupationalCredential', name: 'Experto Universitario en Negocios Digitales y Marketing Digital', recognizedBy: { '@type': 'CollegeOrUniversity', name: 'Universidad Tecnológica Nacional (UTN)' } },
+        alumniOf: { '@type': 'CollegeOrUniversity', name: 'Universidad Tecnológica Nacional (UTN)' },
+        knowsAbout: ['Marketing digital', 'Comercio electrónico', 'Negocios digitales', 'Fabricación de calzado', 'Filmmaking'],
+        homeLocation: { '@type': 'Place', name: 'Buenos Aires, Argentina' }
+      }
+    });
+    document.head.appendChild(s);
   }
 
   function medirCompra() {
